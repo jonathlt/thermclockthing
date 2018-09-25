@@ -1,5 +1,6 @@
 import machine, ssd1306, time, utime, onewire, ds18x20
 from ntptime import settime
+import network
 
 # Set up the display
 i2c = machine.I2C(scl=machine.Pin(16),sda=machine.Pin(5))
@@ -54,7 +55,11 @@ def is_bst(time):
             return True
 
 def get_time():
-    settime()
+    try:
+        settime()
+    except:
+        print('.')
+        pass
     tm = utime.localtime()
     year, month, mday, hour, minute, second, weekday, yearday = tm
     if is_bst(tm):
@@ -74,14 +79,23 @@ def format_time(hour, minute):
         minute_str = str(minute)
     return hour_str + ":" + minute_str
 
-#Show the time
-tm = get_time()
-hour = tm[3]
-minute = tm[4]
-oled.fill(0)
-oled.text(format_time(hour, minute), 0, 0)
-#Show the temperature
-temp = get_temp(ds, 1)
-oled.text(str(temp),0,10)
-oled.show()
+while True:
+
+    tm = get_time()
+    #Show the date
+    day = tm[2]
+    month = tm[1]
+    year = tm[0]
+    oled.fill(0)
+    print(month)
+    oled.text(str(day) + '/' + str(month) + '/' + str(year),30 ,0)
+    #Show the time
+    hour = tm[3]
+    minute = tm[4]
+    oled.text(format_time(hour, minute), 45, 10)
+    #Show the temperature
+    temp = get_temp(ds, 1)
+    oled.text(str(temp) + "C", 45, 40)
+    oled.show()
+    time.sleep(1)
 
