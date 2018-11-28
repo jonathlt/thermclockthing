@@ -7,7 +7,7 @@ i2c = machine.I2C(scl=machine.Pin(5),sda=machine.Pin(4))
 oled = ssd1306.SSD1306_I2C(128,64,i2c,0x3c)
 
 # Set up the temperature sensor
-dat = machine.Pin(2)
+dat = machine.Pin(12)
 ds = ds18x20.DS18X20(onewire.OneWire(dat))
 
 def get_temp(ds_temp, num_dps):
