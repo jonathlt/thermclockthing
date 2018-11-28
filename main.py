@@ -3,7 +3,7 @@ from ntptime import settime
 import network
 
 # Set up the display
-i2c = machine.I2C(scl=machine.Pin(16),sda=machine.Pin(5))
+i2c = machine.I2C(scl=machine.Pin(5),sda=machine.Pin(4))
 oled = ssd1306.SSD1306_I2C(128,64,i2c,0x3c)
 
 # Set up the temperature sensor
